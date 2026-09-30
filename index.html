@@ -6,8 +6,79 @@
     <title>Dokumentumkészítés</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://visjs.github.io/vis/dist/vis.js"></script>
+  <link href="https://visjs.github.io/vis/dist/vis-network.min.css" rel="stylesheet" type="text/css" />
+  <style type="text/css">
+    body {
+      font: 10pt sans;
+    }
+    #mynetwork {
+      width: 800px;
+      height: 500px;
+      border: 1px solid lightgray;
+    }
+  </style>
+  <script type="text/javascript">
+    var network = null;
+    var layoutMethod = "directed";
+
+    function destroy() {
+      if (network !== null) {
+        network.destroy();
+        network = null;
+      }
+    }
+
+    function draw() {
+      destroy();
+
+      var nodes = [];
+      var edges = [];
+      // randomly create some nodes and edges
+      for (var i = 0; i < 19; i++) {
+        nodes.push({id: i, label: String(i)});
+      }
+      edges.push({from: 0, to: 1});
+      edges.push({from: 0, to: 6});
+      edges.push({from: 0, to: 13});
+      edges.push({from: 0, to: 11});
+      edges.push({from: 1, to: 2});
+      edges.push({from: 2, to: 3});
+      edges.push({from: 2, to: 4});
+      edges.push({from: 3, to: 5});
+      edges.push({from: 1, to: 10});
+      edges.push({from: 1, to: 7});
+      edges.push({from: 2, to: 8});
+      edges.push({from: 2, to: 9});
+      edges.push({from: 3, to: 14});
+      edges.push({from: 1, to: 12});
+      edges.push({from: 16, to: 15});
+      edges.push({from: 15, to: 17});
+      edges.push({from: 18, to: 17});
+
+      // create a network
+      var container = document.getElementById('mynetwork');
+      var data = {
+        nodes: nodes,
+        edges: edges
+      };
+
+      var options = {
+        layout: {
+          hierarchical: {
+            sortMethod: layoutMethod
+          }
+        },
+        edges: {
+          smooth: true,
+          arrows: {to : true }
+        }
+      };
+      network = new vis.Network(container, data, options);
+    }
+  </script>
 </head>
-<body>
+<body onload="draw();">
   <div class="container">
     <h1 class="display-6">Dokumentumkészítés és -publikálás gyakorlat</h1>
   </div>
@@ -33,7 +104,16 @@
     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
       <div class="accordion-body">
         <strong>GtiHub - HTML - BootStrap</strong> KÉszítettünk a GtiHub-ra publikus saját weboldalt, amire majd gyűjtjük az elkészített dolgainkat. Akkor a tudás amit veszünk mind meglesz egy helyen. Most vettük a MarkDown és abba Tex elhelyezését is.
-      </div>
+        Layout method:
+        <select id="layout">
+        <option value="hubsize">hubsize</option>
+        <option value="directed">directed</option>
+        </select><br/>
+        <br />
+        <div id="mynetwork"></div>
+
+        <p id="selection"></p>
+    </div>
     </div>
   </div>
   <div class="accordion-item">
@@ -97,5 +177,12 @@
     </div>
   </div>
 </div>
+<script language="JavaScript">
+  var dropdown = document.getElementById("layout");
+  dropdown.onchange = function() {
+    layoutMethod = dropdown.value;
+    draw();
+  }
+</script>
 </body>
 </html>

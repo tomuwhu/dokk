@@ -77,6 +77,10 @@
       network = new vis.Network(container, data, options);
     }
   </script>
+  <div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body onload="draw();">
   <div class="container">
@@ -125,6 +129,7 @@
     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
       <div class="accordion-body">
         <strong>Excel</strong> Visual Basic és Python excelben, Google Docs-ban Google Script, Numbers Apple Script
+        <canvas id="myChart"></canvas>
       </div>
     </div>
   </div>
@@ -185,4 +190,26 @@
   }
 </script>
 </body>
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
 </html>
